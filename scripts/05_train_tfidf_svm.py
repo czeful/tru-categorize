@@ -38,7 +38,6 @@ def load_data() -> pd.DataFrame:
         raise ValueError(f"Ожидаю'{TEXT_COL}' и '{LABEL_COL}' в {PSEUDO_LABELS_PATH}, "
                          f"но есть: {list(df.columns)}")
 
-    # Удаляем пустые
     df = df.dropna(subset=[TEXT_COL, LABEL_COL])
 
     # Удаляем мусорные категории
@@ -55,7 +54,7 @@ def load_data() -> pd.DataFrame:
     print(f"[DATA] После фильтра редких классов (<{MIN_SAMPLES_PER_CLASS}): {len(df):,} строк")
     print(f"[DATA] Кол-во классов: {df[LABEL_COL].nunique()}")
 
-    # Балансировка по максимуму
+
     balanced = []
     for cat, group in df.groupby(LABEL_COL):
         if len(group) > MAX_SAMPLES_PER_CLASS:

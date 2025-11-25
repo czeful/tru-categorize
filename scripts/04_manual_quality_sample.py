@@ -3,10 +3,7 @@ import random
 from pathlib import Path
 import sys
 import os
-
-# Добавляем корень проекта в PYTHONPATH
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
 from src.preprocessor import Preprocessor
 from src.rule_engine import RuleEngine
 from src.classifier import TRUClassifier

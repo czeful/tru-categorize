@@ -11,7 +11,6 @@ class AnchorExamples:
         "молоко|кефир|йогурт|нектар|буренкино|palma": "Продукты питания",
     }
 
-    # Компилируем один раз при загрузке модуля
     _compiled = {
         re.compile(pattern, flags=re.IGNORECASE): category
         for pattern, category in ANCHORS.items()
@@ -26,5 +25,4 @@ class AnchorExamples:
 
     @staticmethod
     def is_tz_example(text: str) -> bool:
-        """Проверка, относится ли строка к примерам из ТЗ"""
         return AnchorExamples.match(text) is not None

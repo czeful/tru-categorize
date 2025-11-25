@@ -83,17 +83,15 @@ def main():
 
     clean_texts = df_ml["clean"].tolist()
 
-    # Векторизация
     X = ml.vectorizer.transform(clean_texts)
 
-    # Предсказания
     ml_preds = ml.clf.predict(X)
 
     df_ml["ml_category"] = ml_preds
 
     df_out = df.copy()
 
-    # Только для индексов, которые остались после очистки
+
     idx_to_update = df_ml.index
 
     df_out.loc[idx_to_update, LABEL_COL] = df_ml["ml_category"]

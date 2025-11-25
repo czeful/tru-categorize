@@ -13,7 +13,7 @@ from src.preprocessor import Preprocessor
 class TRUTrainerMaxQuality:
 
 
-    MODEL_NAME = "microsoft/mdeberta-v3-base"   # №1 по качеству на русском + английском
+    MODEL_NAME = "microsoft/mdeberta-v3-base"   
     OUTPUT_DIR = Path("models/mdeberta_lora")
 
     def __init__(self):
@@ -84,7 +84,7 @@ class TRUTrainerMaxQuality:
             load_best_model_at_end=True,
             metric_for_best_model="eval_loss",
             greater_is_better=False,
-            fp16=False,  # на CPU не работает
+            fp16=False,  
             report_to=[],
         )
 

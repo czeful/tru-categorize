@@ -24,7 +24,7 @@ TRAIN_FILE = BASE / "data" / "processed" / "bert_train.parquet"
 VAL_FILE = BASE / "data" / "processed" / "bert_val.parquet"
 MODEL_DIR = BASE / "models" / "bert_classifier"
 
-MODEL_NAME = "ai-forever/ruBert-base"     # ruBERT
+MODEL_NAME = "ai-forever/ruBert-base"     
 MAX_LENGTH = 128
 BATCH_SIZE = 16
 EPOCHS = 3
@@ -87,7 +87,7 @@ def main():
         num_labels=len(labels),
         label2id=label2id,
         id2label=id2label,
-        use_safetensors=True,                 # ⚡ критично
+        use_safetensors=True,                
         trust_remote_code=False,
         ignore_mismatched_sizes=True,
     )
@@ -99,17 +99,17 @@ def main():
 
     training_args = TrainingArguments(
     output_dir=str(MODEL_DIR),
-    eval_strategy="epoch",       # ← Вернули
-    save_strategy="epoch",             # ← Вернули
+    eval_strategy="epoch",       
+    save_strategy="epoch",             
     save_total_limit=2,
     learning_rate=LR,
     per_device_train_batch_size=BATCH_SIZE,
     per_device_eval_batch_size=BATCH_SIZE,
     num_train_epochs=EPOCHS,
     weight_decay=0.01,
-    metric_for_best_model="eval_loss",   # ← ВАЖНО
-    greater_is_better=False,             # ← ВАЖНО
-    load_best_model_at_end=True,         # ← ВАЖНО
+    metric_for_best_model="eval_loss",   
+    greater_is_better=False,             
+    load_best_model_at_end=True,         
     logging_steps=50,
     fp16=torch.cuda.is_available(),
 )

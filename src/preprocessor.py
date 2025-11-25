@@ -5,9 +5,6 @@ from functools import lru_cache
 from typing import List
 
 
-# ============================
-# ЛЕММАТИЗАЦИЯ: NATASHA → PYMMORPHY
-# ============================
 try:
     from natasha import (
         Segmenter,
@@ -31,16 +28,12 @@ import pymorphy3
 pymorphy = pymorphy3.MorphAnalyzer(lang='ru')
 
 
-# ============================================================
-# Улучшенный Preprocessor (v2)
-# ============================================================
-
 class Preprocessor:
 
     DASHES = re.compile(r"[‐-–—−]+")      
     SLASHES = re.compile(r"[⁄∕]")         
 
-    # Удаление артикулов/кодов в начале строки
+
     ARTICUL_PATTERN = re.compile(
         r"^\s*(?:[A-Z0-9]{4,}|[0-9]{3,}|[A-Z]{2,}[0-9]{2,}|[0-9]{2,}[A-Z]{2,})\b[-_/]?\b",
     )
@@ -51,7 +44,6 @@ class Preprocessor:
         flags=re.IGNORECASE
     )
 
-    # Расширенный whitelist
     ALLOWED_CHARS = re.compile(
         r"[^a-zA-Zа-яА-Я0-9\s\.\,\%\-\+\/\(\)]"
     )
@@ -61,7 +53,6 @@ class Preprocessor:
         if not isinstance(text, str):
             return ""
 
-        # Нормализация Unicode
         text = unicodedata.normalize("NFC", text)
 
         # Унификация дефисов и слэшей
@@ -77,16 +68,9 @@ class Preprocessor:
         if not text:
             return ""
 
-        # Убираем артикулы/номера
         text = Preprocessor.ARTICUL_PATTERN.sub(" ", text)
-
-        # Убираем хвосты с датами
         text = Preprocessor.DATE_TAIL_PATTERN.sub("", text)
-
-        # Удаляем запрещённые символы
         text = Preprocessor.ALLOWED_CHARS.sub(" ", text)
-
-        # Сжимаем повторяющиеся пробелы
         text = re.sub(r"\s+", " ", text).strip()
 
         return text.lower()

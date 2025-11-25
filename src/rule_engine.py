@@ -1,4 +1,4 @@
-# src/rule_engine.py (v2)
+
 import re
 import yaml
 from pathlib import Path
@@ -16,14 +16,11 @@ class RuleEngine:
         self.explain_mode = explain_mode
         self.collect_stats = collect_stats
 
-        # rule_stats: {pattern: count}
+  
         self.stats = {}
 
         self.compiled_rules = self._load_and_compile_rules()
 
-    # ============================================================
-    #           LOAD & COMPILE RULES
-    # ============================================================
     def _load_and_compile_rules(self) -> List[Dict[str, Any]]:
         if not self.rules_path.exists():
             raise FileNotFoundError(f"Файл правил не найден: {self.rules_path}")
@@ -80,22 +77,19 @@ class RuleEngine:
 
         for rule in self.compiled_rules:
 
-            # === apply_if: правило работает только если слова есть в тексте ===
             if rule["apply_if"]:
                 if not all(word in text for word in rule["apply_if"]):
                     continue
 
-            # === exclude_if: правило не применяется ===
+  
             if rule["exclude_if"]:
                 if any(word in text for word in rule["exclude_if"]):
                     continue
 
-            # === основной regex ===
             if rule["regex"].search(text):
                 pattern = rule["pattern"]
                 category = rule["category"]
 
-                # считаем статистику
                 if self.collect_stats:
                     self.stats[pattern] = self.stats.get(pattern, 0) + 1
 
@@ -117,5 +111,5 @@ class RuleEngine:
         print(f"[RuleEngine] Правила перезагружены: {len(self.compiled_rules)} шт.")
 
     def get_stats(self) -> Dict[str, int]:
-        """Возвращает статистику попаданий по паттернам."""
+
         return dict(sorted(self.stats.items(), key=lambda x: -x[1]))
